@@ -2,11 +2,21 @@ from django.shortcuts import render
 from django.http import HttpResponse
 # Create your views here.
 
+from .models import Post
+
 def post_list(request):
-    return render(request, 'index.html', {})
+    queryset = Post.objects.all()
+    context = {
+        "queryset": queryset,
+        "title": "First list"
+    }
+    return render(request, 'index.html', context)
 
 def post_detail(request):
-    return HttpResponse("<h1>List detail</h1>")
+    context = {
+        "title": "First list detail"
+    }
+    return render(request, 'index.html', context)
 
 def post_create(request):
     return HttpResponse("<h1>Create</h1>")
