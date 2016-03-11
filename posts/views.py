@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 # Create your views here.
 
@@ -13,10 +13,13 @@ def post_list(request):
     return render(request, 'index.html', context)
 
 def post_detail(request):
+    #instance = Post.objects.get(id=121)
+    instance = get_object_or_404(Post, id=3)
     context = {
-        "title": "First list detail"
+        "instance": instance,
+        "title": instance.title
     }
-    return render(request, 'index.html', context)
+    return render(request, 'post_detail.html', context)
 
 def post_create(request):
     return HttpResponse("<h1>Create</h1>")
