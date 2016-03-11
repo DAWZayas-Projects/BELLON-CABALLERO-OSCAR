@@ -9,7 +9,7 @@
     <h2>Your context is: {{title}}</h2>
 
     {% for post in queryset %}
-      <a href="{% url 'detail' id={{post.id}} %}" >{{ post.title }}</a><br/>
+      <a href="{{ post.get_absolute_url }}" >{{ post.title }}</a><br/>
       {{ post.content }}<br/>
       {{ post.timestamp }}<br/>
       {{ post.id }}<br/>
