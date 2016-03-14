@@ -3,6 +3,8 @@ from django.http import HttpResponse
 # Create your views here.
 
 from .models import Post
+from .forms import PostForm
+
 
 def post_list(request):
     queryset = Post.objects.all()
@@ -22,7 +24,15 @@ def post_detail(request, id):
     return render(request, 'post_detail.html', context)
 
 def post_create(request):
-    return HttpResponse("<h1>Create</h1>")
+    form = PostForm(request.POST or None)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.save()
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'post_form.html', context)
 
 def post_update(request):
     return HttpResponse("<h1>Update</h1>")
