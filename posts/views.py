@@ -1,5 +1,5 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse, HttpResponseRedirect
 # Create your views here.
 
 from .models import Post
@@ -44,12 +44,15 @@ def post_update(request, id):
     }
     return render(request, 'post_form.html', context)
 
-def post_delete(request):
-    return HttpResponse("<h1>Delete</h1>")
+def post_delete(request, id):
+    instance = get_object_or_404(Post, id=id)
+    instance.delete()
+    return redirect("posts:list")
 
 def create_form(request, instance = None):
     form = PostForm(request.POST or None, instance=instance)
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
+        return HttpResponseRedirect(instance.get_absolute_url())
     return form
