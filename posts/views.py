@@ -15,7 +15,6 @@ def post_list(request):
     return render(request, 'index.html', context)
 
 def post_detail(request, id):
-    #instance = Post.objects.get(id=121)
     instance = get_object_or_404(Post, id=id)
     context = {
         "instance": instance,
@@ -24,18 +23,33 @@ def post_detail(request, id):
     return render(request, 'post_detail.html', context)
 
 def post_create(request):
-    form = PostForm(request.POST or None)
-    if form.is_valid():
-        instance = form.save(commit=False)
-        instance.save()
+    form = create_form(request)
+    submit_button = 'Create'
     context = {
         'form': form,
+        'submit_button': submit_button,
     }
 
     return render(request, 'post_form.html', context)
 
-def post_update(request):
-    return HttpResponse("<h1>Update</h1>")
+def post_update(request, id):
+    instance = get_object_or_404(Post, id=id)
+    form = create_form(request, instance)
+    submit_button = 'Update'
+    context = {
+        "title": instance.title,
+        "instance": instance,
+        'form': form,
+        'submit_button': submit_button,
+    }
+    return render(request, 'post_form.html', context)
 
 def post_delete(request):
     return HttpResponse("<h1>Delete</h1>")
+
+def create_form(request, instance = None):
+    form = PostForm(request.POST or None, instance=instance)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.save()
+    return form
