@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib import messages
 # Create your views here.
 
 from .models import Post
@@ -23,7 +24,12 @@ def post_detail(request, id):
     return render(request, 'post_detail.html', context)
 
 def post_create(request):
-    form = create_form(request)
+    form = PostForm(request.POST or None)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.save()
+        messages.success(request, "Successfully created new post")
+        return HttpResponseRedirect(instance.get_absolute_url())
     submit_button = 'Create'
     context = {
         'form': form,
@@ -34,7 +40,12 @@ def post_create(request):
 
 def post_update(request, id):
     instance = get_object_or_404(Post, id=id)
-    form = create_form(request, instance)
+    form = PostForm(request.POST or None, instance=instance)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.save()
+        messages.success(request, "Successfully updated post: " + instance.title)
+        return HttpResponseRedirect(instance.get_absolute_url())
     submit_button = 'Update'
     context = {
         "title": instance.title,
@@ -48,11 +59,3 @@ def post_delete(request, id):
     instance = get_object_or_404(Post, id=id)
     instance.delete()
     return redirect("posts:list")
-
-def create_form(request, instance = None):
-    form = PostForm(request.POST or None, instance=instance)
-    if form.is_valid():
-        instance = form.save(commit=False)
-        instance.save()
-        return HttpResponseRedirect(instance.get_absolute_url())
-    return form
