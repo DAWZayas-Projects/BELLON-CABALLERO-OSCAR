@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2> Your context is: {{title}}</h2>
     
+    <h1>Your posts</h1>
+
       {% for post in queryset %}
           <a href="{{ post.get_absolute_url }}" >{{ post.title }}</a><br/>
           {{ post.content }}<br/>
@@ -10,4 +11,4 @@
           {{ post.id }}<br/>
           <hr/>
       {% endfor %}
-{% enblock %}
+{% endblock %}
