@@ -9,6 +9,7 @@ from .forms import PostForm
 
 def post_list(request):
     queryset = Post.objects.all()
+    #queryset = Post.objects.all().order_by("-timestamp")
     context = {
         "queryset": queryset,
         "title": "First list"
