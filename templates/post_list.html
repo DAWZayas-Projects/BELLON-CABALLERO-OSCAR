@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div class="col-sm-6 col-sm-offset-3">
+  <div class="col-sm-8 col-sm-offset-3">
     <h1>Your posts</h1>
     <div class="row">
       {% for post in queryset %}
@@ -26,7 +26,34 @@
       -->
     </hr>
 
-      {% endfor %}
+  {% endfor %}
+  <!--<div class="pagination">
+      <span class="step-links">
+          {% if queryset.has_previous %}
+              <a href="?page={{ queryset.previous_page_number }}">previous</a>
+          {% endif %}
+
+          <span class="current">
+              Page {{ queryset.number }} of {{ queryset.paginator.num_pages }}.
+          </span>
+
+          {% if queryset.has_next %}
+              <a href="?page={{ queryset.next_page_number }}">next</a>
+          {% endif %}
+      </span>
+  </div>-->
+  <div class="text-center">
+    {% for num in queryset.paginator.page_range %}
+      {% ifequal num queryset.number %}
+        <span class="btn btn-info">{{ num }}</span>
+      {% else %}
+        <a href="?page={{ num }}" class="btn btn-default"> {{ num }}</a>
+      {% endifequal %}
+    {% endfor %}
+  </div>
+
+
+
     </div>
 {% endblock %}
 
