@@ -1,3 +1,22 @@
 h1 {
   color: #777777;
 }
+
+.socialLink {
+  font-size: 1.5em;
+  color: black;
+
+  margin: 0 10px;
+}
+
+.socialLink:hover {
+  text-decoration: none;
+}
+
+.twitterShare:hover {
+  color: rgb(34, 158, 204);
+}
+
+.googleShare:hover {
+  color: rgb(224, 19, 19);
+}

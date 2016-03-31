@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from urllib import quote_plus
+
 # Create your views here.
 
 from .models import Post
@@ -32,9 +34,13 @@ def post_list(request):
 
 def post_detail(request, slug=None):
     instance = get_object_or_404(Post, slug=slug)
+    absolute_url = request.build_absolute_uri
+    share_url = quote_plus(instance.content)
     context = {
         "instance": instance,
-        "title": instance.title
+        "title": instance.title,
+        "absolute_url": absolute_url,
+        "share_url": share_url
     }
     return render(request, 'post_detail.html', context)
 

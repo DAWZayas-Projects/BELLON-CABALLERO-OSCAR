@@ -5,10 +5,13 @@ from django.db.models.signals import pre_save
 from django.core.urlresolvers import reverse
 
 from django.utils.text import slugify
+
+import datetime
 # Create your models here.
 
 def upload_location(instance, filename):
-    return "%s/%s" %(instance.id, filename)
+    actual_date = datetime.date.today()
+    return "%s/%s" %(actual_date, filename)
 
 class Post(models.Model):
     title = models.CharField(max_length=120)
