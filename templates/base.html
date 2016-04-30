@@ -26,6 +26,19 @@
   </head>
   <body>
     {% include "messages.html" %}
+    <div class="navbar-form navbar-right">
+    <div class="navbar-collapse collapse">
+       {% if user.is_authenticated %}
+         <span>Logged in as {{ user.socialaccount_set.all.0.extra_data.name }}</span>
+         <img class="imgPerfil" src="{{ user.socialaccount_set.all.0.get_avatar_url }}" />
+         <a id="logout" href="/accounts/logout" class="btn btn-success">Logout</a>
+       {% else %}
+         <a id="google_login" href="/accounts/google/login" class="btn btn-success">
+           Sign in with Google
+         </a>
+       {% endif %}
+     </div>
+   </div>
     <div class='container'>
         {% block content %}
 
