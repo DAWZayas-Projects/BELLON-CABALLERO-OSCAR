@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from urllib import quote_plus
@@ -48,6 +48,7 @@ def post_create(request):
     form = PostForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         instance = form.save(commit=False)
+        instance.user = request.user
         instance.save()
         messages.success(request, "Successfully created new post")
         return HttpResponseRedirect(instance.get_absolute_url())
@@ -60,7 +61,12 @@ def post_create(request):
     return render(request, 'post_form.html', context)
 
 def post_update(request, slug=None):
+
     instance = get_object_or_404(Post, slug=slug)
+
+    if instance.user != request.user:
+        raise Http404
+
     form = PostForm(request.POST or None, request.FILES or None, instance=instance)
     if form.is_valid():
         instance = form.save(commit=False)
@@ -78,5 +84,9 @@ def post_update(request, slug=None):
 
 def post_delete(request, slug=None):
     instance = get_object_or_404(Post, slug=slug)
+
+    if instance.user != request.user:
+        raise Http404
+
     instance.delete()
     return redirect("posts:list")

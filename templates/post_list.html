@@ -13,12 +13,17 @@
           <div class="caption">
             <h3>
               <a href="{{ post.get_absolute_url }}" >{{ post.title }}</a><br/>
-              <small>{{ post.timestamp|timesince }}</small>
+              <small>{{ post.timestamp|timesince }} ago</small>
             </h3>
+            {% if post.user.get_full_name %}
+              <p>Author: {{ post.user.get_full_name }}</p>
+            {% endif %}
             <p>{{ post.content|linebreaks|truncatechars:50 }}</p>
-            <p>
-               <a href="#" class="btn btn-primary" role="button">Button</a>
-            </p>
+            {% if post.user.get_full_name == user.socialaccount_set.all.0.extra_data.name %}
+              <p>
+                 <a href="{{ post.get_absolute_url }}edit" class="btn btn-primary" role="button">Edit</a>
+              </p>
+            {% endif %}
           </div>
         </div>
       </div>

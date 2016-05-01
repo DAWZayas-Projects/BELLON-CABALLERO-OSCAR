@@ -12,7 +12,10 @@
     <h2>{{ title }}
       <small>{{ instance.timestamp }}</small>
     </h2>
-
+    {% if instance.user.get_full_name %}
+      <p>Author: {{ instance.user.get_full_name }}</p>
+    {% endif %}
+    
     <div>
       <h5>Share on:</h5>
       <a href="https://twitter.com/home?status={{ share_url }}%20{{ absolute_url }}">
