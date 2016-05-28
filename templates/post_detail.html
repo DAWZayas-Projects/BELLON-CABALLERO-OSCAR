@@ -5,12 +5,15 @@
 {% endblock %}
 
 {% block content %}
-  <div class="col-sm-8 col-sm-offset-3">
+  <div class="col-sm-8 col-sm-offset-2">
     {% if instance.image %}
       <img src="{{ instance.image.url }}" class="img-responsive" />
     {% endif %}
     <h2>{{ title }}
-      <small>{{ instance.timestamp }}</small>
+      {% if instance.draft %}  
+        <small class="draft">Draft</small>
+      {% endif %}
+      <small>{{ instance.publish }}</small>
     </h2>
     {% if instance.user.get_full_name %}
       <p>Author: {{ instance.user.get_full_name }}</p>
