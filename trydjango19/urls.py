@@ -20,8 +20,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^posts/', include('posts.urls', namespace="posts")),
-    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/posts'}),
+    url(r'^', include('posts.urls', namespace="posts")),
+    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^accounts/', include('allauth.urls')),
 ]
 
