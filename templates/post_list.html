@@ -1,9 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div class="col-sm-8 col-sm-offset-3">
-    <h1>Your posts</h1>
-    <div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+    <h1>{{ title }} 
+      <small>
+          {% if title == 'Your posts' %}
+            <a href="{% url 'posts:list' %}">All posts</a>
+          {% else %}
+            <a href="{% url 'posts:myposts' %}">Your posts</a>
+          {% endif %}
+      </small>
+    </h1>
+    
+    <div class="row"> 
       {% for post in queryset %}
       <div class="col-sm-12">
         <div class="thumbnail">
@@ -19,9 +28,10 @@
               <p>Author: {{ post.user.get_full_name }}</p>
             {% endif %}
             <p>{{ post.content|linebreaks|truncatechars:50 }}</p>
-            {% if post.user.get_full_name == user.socialaccount_set.all.0.extra_data.name %}
+            {% if post.user.get_full_name == user.socialaccount_set.all.0.extra_data.name or post.user.get_full_name == request.user.get_full_name %}
               <p>
-                 <a href="{{ post.get_absolute_url }}edit" class="btn btn-primary" role="button">Edit</a>
+                <a href="{{ post.get_absolute_url }}edit" class="btn btn-primary" role="button">Edit</a>
+                <a href="{{ post.get_absolute_url }}delete" class="btn btn-danger" role="button">Delete</a>
               </p>
             {% endif %}
           </div>
@@ -32,8 +42,27 @@
         {% cycle "" "<div class='col-sm-12'></hr></div> </div><div class='row'>" %}
       -->
     </hr>
-
+    {% empty %}
+    <div class="text-center">
+      {% if user.is_authenticated %}
+          <div class="h4">You do not have any posts:</div>
+          <a href="create" class="btn btn-primary" role="button">Create your first now!</a>
+      {% else %}
+          <div class="h4">Well... This is awkward. 
+            <br/>
+            There are no posts, and, as long you are not logged in, you cannot create one...
+            <br/>
+            <br/>
+            <b>What are you waiting for?</b>
+            <br/> 
+            <a id="google_login" href="/accounts/google/login" class="btn btn-default">
+              Logging in now <i class="googleShare fa fa-google-plus"></i>
+            </a>
+          </div>
+      {% endif %}
+    </div>
   {% endfor %}
+  </div>
   <!--<div class="pagination">
       <span class="step-links">
           {% if queryset.has_previous %}
@@ -49,19 +78,21 @@
           {% endif %}
       </span>
   </div>-->
-  <div class="text-center">
-    {% for num in queryset.paginator.page_range %}
-      {% ifequal num queryset.number %}
-        <span class="btn btn-info">{{ num }}</span>
-      {% else %}
-        <a href="?page={{ num }}" class="btn btn-default"> {{ num }}</a>
-      {% endifequal %}
-    {% endfor %}
-  </div>
-
-
-
+  {% if queryset_list_len != 0 %}
+    <div class="text-center">
+      {% for num in queryset.paginator.page_range %}
+        {% ifequal num queryset.number %}
+          <span class="btn btn-info">{{ num }}</span>
+        {% else %}
+          <a href="?page={{ num }}" class="btn btn-default"> {{ num }}</a>
+        {% endifequal %}
+      {% endfor %}
     </div>
+  {% endif %}
+
+
+
+</div>
 {% endblock %}
 
 

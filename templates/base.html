@@ -26,24 +26,35 @@
   </head>
   <body>
     {% include "messages.html" %}
-    <div class="navbar-form navbar-right">
-    <div class="navbar-collapse collapse">
-       {% if user.is_authenticated %}
-         <span>Logged in as {{ request.user.get_full_name }}</span>
-
-         {% if user.socialaccount_set.all.0.get_avatar_url %}
-            <img class="imgPerfil" src="{{ user.socialaccount_set.all.0.get_avatar_url }}" />
-         {% else %}
-            <img class="imgPerfil" src="{% static 'images/default.png' %}" />
-         {% endif %}
-         <a id="logout" href="/accounts/logout" class="btn btn-success">Logout</a>
-       {% else %}
-         <a id="google_login" href="/accounts/google/login" class="btn btn-success">
-           Sign in with Google
-         </a>
-       {% endif %}
-     </div>
-   </div>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="{% url 'posts:list' %}">
+            Django Blog
+          </a>
+        </div>
+        <div class="navbar-form navbar-right">
+          <div class="navbar-collapse collapse">
+             {% if user.is_authenticated %}
+               <span>Logged in as {{ request.user.get_full_name }}</span>
+      
+               {% if user.socialaccount_set.all.0.get_avatar_url %}
+                  <img class="imgPerfil" src="{{ user.socialaccount_set.all.0.get_avatar_url }}" />
+               {% else %}
+                  <img class="imgPerfil" src="{% static 'images/default.png' %}" />
+               {% endif %}
+               <a id="logout" href="/accounts/logout" class="btn btn-warning">Logout</a>
+             {% else %}
+               <a id="google_login" href="/accounts/google/login" class="btn btn-success">
+                 Sign in with Google
+               </a>
+             {% endif %}
+           </div>
+         </div>
+      </div>
+      
+    </nav>
+    
     <div class='container'>
         {% block content %}
 

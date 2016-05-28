@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from urllib import quote_plus
 
@@ -28,7 +29,34 @@ def post_list(request):
 
     context = {
         "queryset": queryset,
-        "title": "First list"
+        "queryset_list_len": len(queryset_list),
+        "title": "All posts"
+    }
+    return render(request, 'post_list.html', context)
+    
+@login_required
+def my_posts(request):
+    
+    username = request.user.id
+    queryset_list = Post.objects.filter(user=username)
+    
+    paginator = Paginator(queryset_list, 2) # Show 25 contacts per page
+
+    page = request.GET.get('page')
+    queryset = queryset_list
+    try:
+        queryset = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        queryset = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        queryset = paginator.page(paginator.num_pages)
+        
+    context = {
+        "queryset": queryset,
+        "queryset_list_len": len(queryset_list),
+        "title": "Your posts"
     }
     return render(request, 'post_list.html', context)
 
