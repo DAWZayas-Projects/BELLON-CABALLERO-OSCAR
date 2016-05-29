@@ -16,6 +16,10 @@ def post_list(request):
     queryset_list = Post.objects.filter(draft=False).filter(publish__lte=timezone.now())
     #queryset = Post.objects.all().order_by("-timestamp")
 
+    query = request.GET.get("q")
+    if query:
+        queryset_list = queryset_list.filter(title__icontains=query)
+
     paginator = Paginator(queryset_list, 2) # Show 25 contacts per page
 
     page = request.GET.get('page')
