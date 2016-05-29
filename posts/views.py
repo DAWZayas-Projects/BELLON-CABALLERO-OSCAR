@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from urllib import quote_plus
+from django.utils import timezone
 
 # Create your views here.
 
@@ -12,7 +13,7 @@ from .forms import PostForm
 
 
 def post_list(request):
-    queryset_list = Post.objects.all()
+    queryset_list = Post.objects.filter(draft=False).filter(publish__lte=timezone.now())
     #queryset = Post.objects.all().order_by("-timestamp")
 
     paginator = Paginator(queryset_list, 2) # Show 25 contacts per page
@@ -72,6 +73,7 @@ def post_detail(request, slug=None):
     }
     return render(request, 'post_detail.html', context)
 
+@login_required
 def post_create(request):
     form = PostForm(request.POST or None, request.FILES or None)
     if form.is_valid():

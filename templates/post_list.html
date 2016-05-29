@@ -11,6 +11,10 @@
           {% endif %}
       </small>
     </h1>
+    <form method="GET" action="">
+      <input class="form-control col-sm-4" type="text" placeholder="Search posts" />
+      <input type="submit" class="btn btn-default" value="Search" />
+    </form>
     
     <div class="row"> 
       {% for post in queryset %}
