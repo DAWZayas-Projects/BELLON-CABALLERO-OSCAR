@@ -59,21 +59,25 @@
     </hr>
     {% empty %}
     <div class="text-center">
-      {% if user.is_authenticated %}
-          <div class="h4">You do not have any posts:</div>
-          <a href="create" class="btn btn-primary" role="button">Create your first now!</a>
+      {% if not request.GET.q %}
+        {% if user.is_authenticated %}
+            <div class="h4">You do not have any posts:</div>
+            <a href="create" class="btn btn-primary" role="button">Create your first now!</a>
+        {% else %}
+            <div class="h4">Well... This is awkward. 
+              <br/>
+              There are no posts, and, as long you are not logged in, you cannot create one...
+              <br/>
+              <br/>
+              <b>What are you waiting for?</b>
+              <br/> 
+              <a id="google_login" href="/accounts/google/login" class="btn btn-default">
+                Logging in now <i class="googleShare fa fa-google-plus"></i>
+              </a>
+            </div>
+        {% endif %}
       {% else %}
-          <div class="h4">Well... This is awkward. 
-            <br/>
-            There are no posts, and, as long you are not logged in, you cannot create one...
-            <br/>
-            <br/>
-            <b>What are you waiting for?</b>
-            <br/> 
-            <a id="google_login" href="/accounts/google/login" class="btn btn-default">
-              Logging in now <i class="googleShare fa fa-google-plus"></i>
-            </a>
-          </div>
+        <div>No posts found containing: <b>{{ request.GET.q }}</b></div>
       {% endif %}
     </div>
   {% endfor %}
