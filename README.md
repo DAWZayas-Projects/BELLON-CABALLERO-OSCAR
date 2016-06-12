@@ -24,7 +24,7 @@ También se intentarán añadir varios [paquetes](https://www.djangopackages.com
 
 ###Presentación
 
-Link a [Prezi](http://prezi.com/grqsa66w10zh/?utm_campaign=share&utm_medium=copy)
+[Prezi](http://prezi.com/grqsa66w10zh/?utm_campaign=share&utm_medium=copy)
 
 [Documentación](Documentacion/Documentacion proyecto final.pdf)
 
