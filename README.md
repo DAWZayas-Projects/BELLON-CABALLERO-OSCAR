@@ -19,6 +19,11 @@ También se intentarán añadir varios [paquetes](https://www.djangopackages.com
 ###Python + Django
 - Desarrollo de la aplicación
 
+
+###-----
+
+Link a la [presentación](http://prezi.com/grqsa66w10zh/?utm_campaign=share&utm_medium=copy)
+
 ###-----
 
 ###Commits importantes
